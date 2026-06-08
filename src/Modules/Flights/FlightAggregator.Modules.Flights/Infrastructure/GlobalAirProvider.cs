@@ -1,10 +1,13 @@
-namespace FlightAggregator.Providers;
+using FlightAggregator.Modules.Flights.Domain;
 
-using FlightAggregator.Core;
+namespace FlightAggregator.Modules.Flights.Infrastructure;
 
 public sealed class GlobalAirProvider : IFlightProvider
 {
     private const string CurrencyCode = "USD";
+    private const string FlightId = "globalair-ga123";
+
+    public IReadOnlyList<string> KnownFlightIds => [FlightId];
 
     public Task<IReadOnlyList<FlightOffer>> SearchFlightsAsync(FlightSearchRequest request, CancellationToken cancellationToken)
     {
@@ -16,7 +19,7 @@ public sealed class GlobalAirProvider : IFlightProvider
         var total = perPassenger * request.Passengers;
 
         var offer = new FlightOffer(
-            Id: "globalair-ga123",
+            Id: FlightId,
             Provider: "GlobalAir",
             FlightNumber: "GA123",
             Origin: request.Origin,

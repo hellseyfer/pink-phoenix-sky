@@ -1,11 +1,14 @@
-namespace FlightAggregator.Providers;
+using FlightAggregator.Modules.Flights.Domain;
 
-using FlightAggregator.Core;
+namespace FlightAggregator.Modules.Flights.Infrastructure;
 
 public sealed class BudgetWingsProvider : IFlightProvider
 {
     private const string CurrencyCode = "USD";
     private const decimal MinimumPrice = 29.99m;
+    private const string FlightId = "budgetwings-bw456";
+
+    public IReadOnlyList<string> KnownFlightIds => [FlightId];
 
     public Task<IReadOnlyList<FlightOffer>> SearchFlightsAsync(FlightSearchRequest request, CancellationToken cancellationToken)
     {
@@ -17,7 +20,7 @@ public sealed class BudgetWingsProvider : IFlightProvider
         var total = perPassenger * request.Passengers;
 
         var offer = new FlightOffer(
-            Id: "budgetwings-bw456",
+            Id: FlightId,
             Provider: "BudgetWings",
             FlightNumber: "BW456",
             Origin: request.Origin,

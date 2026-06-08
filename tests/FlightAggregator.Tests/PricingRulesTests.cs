@@ -1,4 +1,4 @@
-using FlightAggregator.Providers;
+using FlightAggregator.Modules.Flights.Infrastructure;
 using Xunit;
 
 namespace FlightAggregator.Tests;

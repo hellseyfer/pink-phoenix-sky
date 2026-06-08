@@ -1,0 +1,20 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Api/">
+    <Project Path="src/Api/FlightAggregator.Api.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Bookings/">
+    <Project Path="src/Modules/Bookings/FlightAggregator.Modules.Bookings/FlightAggregator.Modules.Bookings.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Flights/">
+    <Project Path="src/Modules/Flights/FlightAggregator.Modules.Flights.PublicApi/FlightAggregator.Modules.Flights.PublicApi.csproj" />
+    <Project Path="src/Modules/Flights/FlightAggregator.Modules.Flights/FlightAggregator.Modules.Flights.csproj" />
+  </Folder>
+  <Folder Name="/src/Shared/">
+    <Project Path="src/Shared/FlightAggregator.Shared.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FlightAggregator.Tests/FlightAggregator.Tests.csproj" />
+  </Folder>
+</Solution>
