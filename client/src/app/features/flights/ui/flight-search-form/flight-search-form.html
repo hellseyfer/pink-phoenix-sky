@@ -1,0 +1,87 @@
+<form class="card" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  <h2 class="card__title">Search flights</h2>
+  <p class="card__subtitle">Find the best fares across our partner airlines.</p>
+
+  <div class="grid">
+    <div class="field">
+      <label for="origin">Origin</label>
+      <select id="origin" formControlName="origin" [class.invalid]="showError('origin')">
+        <option value="" disabled>Select origin</option>
+        @for (airport of airports(); track airport.code) {
+          <option [value]="airport.code">{{ airport.city }} ({{ airport.code }}) — {{ airport.country }}</option>
+        }
+      </select>
+      <p class="field__error" aria-live="polite">
+        @if (showError('origin')) { Origin is required. }
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="destination">Destination</label>
+      <select id="destination" formControlName="destination" [class.invalid]="showError('destination')">
+        <option value="" disabled>Select destination</option>
+        @for (airport of airports(); track airport.code) {
+          <option [value]="airport.code">{{ airport.city }} ({{ airport.code }}) — {{ airport.country }}</option>
+        }
+      </select>
+      <p class="field__error" aria-live="polite">
+        @if (showError('destination')) { Destination is required. }
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="departureDate">Departure date</label>
+      <input
+        id="departureDate"
+        type="date"
+        formControlName="departureDate"
+        [min]="minDate"
+        [class.invalid]="showError('departureDate')"
+      />
+      <p class="field__error" aria-live="polite">
+        @if (showError('departureDate')) { Departure date is required. }
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="passengers">Passengers</label>
+      <input
+        id="passengers"
+        type="number"
+        formControlName="passengers"
+        min="1"
+        max="9"
+        [class.invalid]="showError('passengers')"
+      />
+      <p class="field__error" aria-live="polite">
+        @if (showError('passengers')) { Enter between 1 and 9 passengers. }
+      </p>
+    </div>
+
+    <div class="field">
+      <label for="cabinClass">Cabin</label>
+      <select id="cabinClass" formControlName="cabinClass">
+        @for (option of cabinOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      <p class="field__error"></p>
+    </div>
+  </div>
+
+  <p class="field__error" aria-live="polite">
+    @if (form.errors?.['sameAirport'] && (form.touched || form.dirty)) {
+      Origin and destination must be different.
+    }
+  </p>
+
+  <div class="form-actions">
+    <button class="btn btn--primary" type="submit" [disabled]="pending()">
+      @if (pending()) {
+        <span class="spinner" aria-hidden="true"></span> Searching…
+      } @else {
+        Search flights
+      }
+    </button>
+  </div>
+</form>

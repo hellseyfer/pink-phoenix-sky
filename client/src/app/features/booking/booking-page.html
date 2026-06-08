@@ -1,0 +1,44 @@
+@if (selection(); as sel) {
+  @if (bookingReference(); as reference) {
+    <section class="card booking-success" role="status" aria-live="polite">
+      <span class="booking-success__icon" aria-hidden="true">&#10003;</span>
+      <h1 class="card__title">Booking confirmed</h1>
+      <p class="text-muted">Your flight from {{ sel.origin.city }} to {{ sel.destination.city }} is booked.</p>
+      <p class="booking-success__ref">
+        Reference: <strong>{{ reference }}</strong>
+      </p>
+      <button class="btn btn--primary" type="button" (click)="startNewSearch()">
+        Search more flights
+      </button>
+    </section>
+  } @else {
+    <div class="booking-layout">
+      <div class="booking-layout__main">
+        <button class="btn btn--ghost back-link" type="button" (click)="startNewSearch()">
+          &larr; Back to search
+        </button>
+
+        <app-passenger-form
+          [passengers]="sel.passengers"
+          [isInternational]="isInternational()"
+          [pending]="submitting()"
+          (submitForm)="onConfirm($event)"
+        />
+
+        @if (error()) {
+          <div class="card alert alert--error" role="alert">{{ error() }}</div>
+        }
+      </div>
+
+      <aside class="booking-layout__aside">
+        <app-booking-summary [selection]="sel" [isInternational]="isInternational()" />
+        <app-price-breakdown
+          [pricePerPassenger]="sel.offer.pricePerPassenger"
+          [passengers]="sel.passengers"
+          [total]="sel.offer.totalPrice"
+          [currency]="sel.offer.currency"
+        />
+      </aside>
+    </div>
+  }
+}

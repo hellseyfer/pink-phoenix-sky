@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.form-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+}

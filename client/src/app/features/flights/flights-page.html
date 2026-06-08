@@ -1,0 +1,15 @@
+<app-flight-search-form [airports]="airports" [pending]="loading()" (search)="onSearch($event)" />
+
+@if (hasError()) {
+  <div class="card alert alert--error" role="alert">
+    Something went wrong while searching for flights. Please try again.
+  </div>
+}
+
+<app-flight-results-table
+  [offers]="offers()"
+  [loading]="loading()"
+  [searched]="searched()"
+  [passengers]="passengers()"
+  (select)="onSelect($event)"
+/>

@@ -1,0 +1,51 @@
+:host {
+  display: block;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.route__arrow {
+  color: var(--primary);
+}
+.route__cities {
+  margin: 0.1rem 0 1rem;
+}
+
+.badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+}
+.badge--intl {
+  background: var(--primary-soft);
+  color: var(--primary-hover);
+}
+.badge--domestic {
+  background: var(--surface-2);
+  color: var(--text-muted);
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+.summary-grid dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+.summary-grid dd {
+  margin: 0.15rem 0 0;
+  font-weight: 600;
+}

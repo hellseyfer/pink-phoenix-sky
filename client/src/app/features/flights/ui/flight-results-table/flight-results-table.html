@@ -1,0 +1,68 @@
+@if (loading()) {
+  <div class="card results-status" role="status" aria-live="polite">
+    <span class="spinner" aria-hidden="true"></span>
+    <span>Searching for the best fares…</span>
+  </div>
+} @else if (searched() && rows().length === 0) {
+  <div class="card results-status" role="status" aria-live="polite">
+    No flights found for this route. Try different dates or airports.
+  </div>
+} @else if (rows().length > 0) {
+  <section class="card" aria-label="Flight results">
+    <div class="results-header">
+      <h2 class="card__title">{{ rows().length }} flight(s) found</h2>
+      <div class="field results-sort">
+        <label for="sort">Sort by</label>
+        <select id="sort" [value]="sortKey()" (change)="onSortChange($any($event.target).value)">
+          @for (option of sortOptions; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <div class="table-scroll">
+      <table class="results-table">
+        <caption class="visually-hidden">
+          Available flights, sortable by price, duration, and departure time
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">Airline</th>
+            <th scope="col">Flight</th>
+            <th scope="col">Departs</th>
+            <th scope="col">Arrives</th>
+            <th scope="col">Duration</th>
+            <th scope="col">Cabin</th>
+            <th scope="col" class="num">Price</th>
+            <th scope="col"><span class="visually-hidden">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.offer.id) {
+            <tr>
+              <td data-label="Airline">{{ row.offer.provider }}</td>
+              <td data-label="Flight">{{ row.offer.flightNumber }}</td>
+              <td data-label="Departs">{{ row.departure }}</td>
+              <td data-label="Arrives">{{ row.arrival }}</td>
+              <td data-label="Duration">{{ row.duration }}</td>
+              <td data-label="Cabin">{{ row.cabin }}</td>
+              <td data-label="Price" class="num">
+                <span class="price-total">{{ row.offer.totalPrice | money: row.offer.currency }} total</span>
+                <span class="price-each">
+                  {{ row.offer.pricePerPassenger | money: row.offer.currency }} per person
+                  @if (passengers() > 1) { ({{ passengers() }} pax) }
+                </span>
+              </td>
+              <td data-label="" class="num">
+                <button class="btn btn--primary btn--sm" type="button" (click)="select.emit(row.offer)">
+                  Select
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+}

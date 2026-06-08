@@ -1,0 +1,32 @@
+:host {
+  display: block;
+}
+
+.breakdown {
+  margin: 0;
+}
+.breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.breakdown__row dt {
+  color: var(--text-muted);
+}
+.breakdown__row dd {
+  margin: 0;
+  font-weight: 600;
+}
+.breakdown__row--total {
+  border-bottom: none;
+  font-size: 1.15rem;
+}
+.breakdown__row--total dt {
+  color: var(--text);
+  font-weight: 700;
+}
+.breakdown__row--total dd {
+  font-weight: 800;
+  color: var(--primary-hover);
+}
