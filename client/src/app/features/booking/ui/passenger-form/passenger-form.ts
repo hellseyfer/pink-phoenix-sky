@@ -1,5 +1,16 @@
-import { ChangeDetectionStrategy, Component, OnInit, computed, inject, input, output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  OnInit,
+  computed,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PassengerDetails } from '../../../../shared/models/booking.models';
 
 const PASSPORT_PATTERN = /^[A-Za-z0-9]{6,9}$/;
@@ -14,13 +25,17 @@ const NATIONAL_ID_PATTERN = /^[0-9]{7,10}$/;
 })
 export class PassengerForm implements OnInit {
   private readonly fb = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly passengers = input.required<number>();
   readonly isInternational = input(false);
   readonly pending = input(false);
   readonly submitForm = output<PassengerDetails[]>();
 
-  protected readonly form = this.fb.array<FormGroup>([]);
+  protected readonly form = this.fb.group({
+    passengers: this.fb.array<FormGroup>([]),
+  });
+  protected readonly invalid = signal(true);
 
   protected readonly documentLabel = computed(() =>
     this.isInternational() ? 'Passport Number' : 'National ID',
@@ -37,7 +52,7 @@ export class PassengerForm implements OnInit {
       : [Validators.required, Validators.pattern(NATIONAL_ID_PATTERN)];
 
     for (let i = 0; i < this.passengers(); i++) {
-      this.form.push(
+      this.passengersArray.push(
         this.fb.group({
           fullName: ['', [Validators.required, Validators.minLength(2)]],
           email: ['', [Validators.required, Validators.email]],
@@ -45,10 +60,19 @@ export class PassengerForm implements OnInit {
         }),
       );
     }
+
+    this.invalid.set(this.form.invalid);
+    this.form.statusChanges
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.invalid.set(this.form.invalid));
+  }
+
+  private get passengersArray(): FormArray<FormGroup> {
+    return this.form.controls.passengers;
   }
 
   protected get groups(): FormGroup[] {
-    return this.form.controls as FormGroup[];
+    return this.passengersArray.controls;
   }
 
   protected showError(group: FormGroup, controlName: string): boolean {
@@ -72,11 +96,12 @@ export class PassengerForm implements OnInit {
     return null;
   }
 
-  protected submit(): void {
+  protected submit(event?: Event): void {
+    event?.preventDefault();
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
-    this.submitForm.emit(this.form.getRawValue() as PassengerDetails[]);
+    this.submitForm.emit(this.passengersArray.getRawValue() as PassengerDetails[]);
   }
 }

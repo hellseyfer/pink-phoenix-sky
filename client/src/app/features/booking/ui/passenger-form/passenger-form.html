@@ -1,11 +1,12 @@
-<form class="card" (ngSubmit)="submit()" novalidate>
+<form class="card" [formGroup]="form" (ngSubmit)="submit($event)" novalidate>
   <h2 class="card__title">Passenger details</h2>
   <p class="card__subtitle">
     {{ isInternational() ? 'International route — passport required.' : 'Domestic route — national ID required.' }}
   </p>
 
-  @for (group of groups; track $index) {
-    <fieldset class="passenger" [formGroup]="group">
+  <ng-container formArrayName="passengers">
+    @for (group of groups; track $index) {
+    <fieldset class="passenger" [formGroupName]="$index">
       <legend>Passenger {{ $index + 1 }}</legend>
 
       <div class="grid">
@@ -53,10 +54,11 @@
         </div>
       </div>
     </fieldset>
-  }
+    }
+  </ng-container>
 
   <div class="form-actions">
-    <button class="btn btn--primary" type="submit" [disabled]="pending()">
+    <button class="btn btn--primary" type="submit" [disabled]="pending() || invalid()">
       @if (pending()) {
         <span class="spinner" aria-hidden="true"></span> Confirming…
       } @else {
