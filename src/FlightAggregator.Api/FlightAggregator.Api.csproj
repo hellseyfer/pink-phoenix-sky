@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FlightAggregator.Core\FlightAggregator.Core.csproj" />
+    <ProjectReference Include="..\FlightAggregator.Providers\FlightAggregator.Providers.csproj" />
+  </ItemGroup>
+</Project>
