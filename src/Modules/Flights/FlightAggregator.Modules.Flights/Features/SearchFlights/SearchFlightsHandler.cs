@@ -8,6 +8,7 @@ public sealed class SearchFlightsHandler(IEnumerable<IFlightProvider> providers)
 
     public async Task<IReadOnlyList<FlightOfferResponse>> HandleAsync(SearchFlightsRequest request, CancellationToken cancellationToken)
     {
+        // map the request into a common domain model
         var domainRequest = new FlightSearchRequest(
             request.Origin,
             request.Destination,
@@ -17,7 +18,7 @@ public sealed class SearchFlightsHandler(IEnumerable<IFlightProvider> providers)
 
         // materialize the task array using ToArray()
         var tasks = _providers.Select(p => p.SearchFlightsAsync(domainRequest, cancellationToken)).ToArray();
-        // run the tasks in parallel
+        // run the tasks in parallel, the duration of this request is limited by the slowest provider
         var results = await Task.WhenAll(tasks);
 
         // flatten the results and map to the response, materialize the array with ToArray()
@@ -27,6 +28,7 @@ public sealed class SearchFlightsHandler(IEnumerable<IFlightProvider> providers)
             .ToArray();
     }
 
+    // map to DTO response
     private static FlightOfferResponse MapToResponse(FlightOffer offer) => new(
         offer.Id,
         offer.Provider,

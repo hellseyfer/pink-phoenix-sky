@@ -1,7 +1,7 @@
 using FlightAggregator.Modules.Flights.Domain;
 
 namespace FlightAggregator.Modules.Flights.Features.SearchFlights;
-
+// Per use-case. Feature contracts are request/response shapes for one specific use case and transport boundary. UI concerns
 public sealed record SearchFlightsRequest(
     string Origin,
     string Destination,

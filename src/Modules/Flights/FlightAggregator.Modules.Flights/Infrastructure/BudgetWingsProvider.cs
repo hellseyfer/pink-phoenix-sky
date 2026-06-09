@@ -13,6 +13,7 @@ public sealed class BudgetWingsProvider : IFlightProvider
     public Task<IReadOnlyList<FlightOffer>> SearchFlightsAsync(FlightSearchRequest request, CancellationToken cancellationToken)
     {
         // Here lies the real mapping from external API to internal domain model
+        // each provider transform the request into their own domain model
         var departure = request.DepartureDate.ToDateTime(new TimeOnly(9, 0), DateTimeKind.Utc);
         var arrival = request.DepartureDate.ToDateTime(new TimeOnly(12, 45), DateTimeKind.Utc);
 
