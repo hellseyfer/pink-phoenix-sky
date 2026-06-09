@@ -11,6 +11,7 @@ public sealed class GlobalAirProvider : IFlightProvider
 
     public Task<IReadOnlyList<FlightOffer>> SearchFlightsAsync(FlightSearchRequest request, CancellationToken cancellationToken)
     {
+        // Here lies the real mapping from external API to internal domain model
         var departure = request.DepartureDate.ToDateTime(new TimeOnly(8, 0), DateTimeKind.Utc);
         var arrival = request.DepartureDate.ToDateTime(new TimeOnly(11, 30), DateTimeKind.Utc);
 

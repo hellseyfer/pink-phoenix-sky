@@ -12,7 +12,7 @@ public sealed class CreateBookingHandler(IFlightsModuleApi flightsModuleApi)
         {
             return CreateBookingResult.FlightNotFound(request.FlightId);
         }
-
+        // Generate a random booking code
         var bytes = RandomNumberGenerator.GetBytes(3);
         var code = Convert.ToHexString(bytes);
         return CreateBookingResult.Success(new CreateBookingResponse($"BK-{code}"));

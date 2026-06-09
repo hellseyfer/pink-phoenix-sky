@@ -10,6 +10,7 @@ public sealed record SearchFlightsRequest(
     CabinClass CabinClass
 );
 
+// sealed: cannot be inherited nor extended, record: immutable data
 public sealed record FlightOfferResponse(
     string Id,
     string Provider,

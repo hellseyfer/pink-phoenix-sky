@@ -15,9 +15,12 @@ public sealed class SearchFlightsHandler(IEnumerable<IFlightProvider> providers)
             request.Passengers,
             request.CabinClass);
 
+        // materialize the task array using ToArray()
         var tasks = _providers.Select(p => p.SearchFlightsAsync(domainRequest, cancellationToken)).ToArray();
+        // run the tasks in parallel
         var results = await Task.WhenAll(tasks);
 
+        // flatten the results and map to the response, materialize the array with ToArray()
         return results
             .SelectMany(offers => offers)
             .Select(MapToResponse)

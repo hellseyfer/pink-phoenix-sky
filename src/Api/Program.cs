@@ -28,4 +28,4 @@ foreach (var module in modules)
     module.MapEndpoints(app);
 }
 
-app.Run();
+await app.RunAsync();
