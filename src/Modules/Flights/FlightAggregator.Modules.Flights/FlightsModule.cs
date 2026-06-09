@@ -14,6 +14,7 @@ public sealed class FlightsModule : IModule
     {
         services.AddSingleton<IFlightProvider, GlobalAirProvider>();
         services.AddSingleton<IFlightProvider, BudgetWingsProvider>();
+        services.AddSingleton<IFlightProvider, ArticAirProvider>();
         services.AddSingleton<SearchFlightsHandler>();
         services.AddSingleton<IFlightsModuleApi, FlightsModuleApi>();
     }

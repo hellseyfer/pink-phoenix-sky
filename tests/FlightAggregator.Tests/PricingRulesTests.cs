@@ -23,4 +23,14 @@ public sealed class PricingRulesTests
         var actual = BudgetWingsProvider.CalculatePerPassengerPrice(baseFare);
         Assert.Equal(expected, actual);
     }
+
+    [Theory]
+    [InlineData(100.00, 110.00)]
+    [InlineData(50.00, 50.00)]
+    [InlineData(40.00, 49.99)]
+    public void ArticAir_PerPassengerPrice_AppliesMarkup_ThenLoyaltyDiscount_WithMinPrice(decimal baseFare, decimal expected)
+    {
+        var actual = ArticAirProvider.CalculatePerPassengerPrice(baseFare);
+        Assert.Equal(expected, actual);
+    }
 }
